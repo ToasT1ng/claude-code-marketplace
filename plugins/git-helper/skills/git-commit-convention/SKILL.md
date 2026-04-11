@@ -20,8 +20,10 @@ Write a gitmoji commit message for the staged changes. Commit messages are alway
 ## Format
 
 ```
-:gitmoji: short description of the change
+<gitmoji> short description of the change
 ```
+
+Use the actual unicode emoji character (e.g. `✨`), not the colon code (e.g. ~~`:sparkles:`~~).
 
 Keep the full line under 72 characters.
 
@@ -40,9 +42,9 @@ Commits should be small but meaningful. The right unit is a **coherent change** 
 When you decide to split, output multiple commit messages, one per line, in the order they should be committed:
 
 ```
-:sparkles: add User domain model
-:wrench: add users table migration
-:white_check_mark: add unit tests for User domain
+✨ add User domain model
+🔧 add users table migration
+✅ add unit tests for User domain
 ```
 
 The user will then stage and commit each group separately.
@@ -51,46 +53,46 @@ The user will then stage and commit each group separately.
 
 **Example 1 — new feature with tests:**
 Diff shows: new `OrderService.kt`, new `OrderServiceTest.kt`
-Output: `:sparkles: add order service with validation logic`
+Output: `✨ add order service with validation logic`
 
 **Example 2 — bug fix:**
 Diff shows: off-by-one fix in `PaginationHelper.kt`
-Output: `:bug: fix off-by-one error in pagination offset`
+Output: `🐛 fix off-by-one error in pagination offset`
 
 **Example 3 — mixed unrelated changes:**
 Diff shows: new `PaymentService.kt`, unrelated fix in `UserRepository.kt`
 Output:
 ```
-:sparkles: add payment service
-:bug: fix user repository query
+✨ add payment service
+🐛 fix user repository query
 ```
 
 ## Gitmoji reference
 
-| Emoji | Code | Use when |
-|-------|------|----------|
-| ✨ | `:sparkles:` | New feature |
-| 🐛 | `:bug:` | Bug fix |
-| 🔥 | `:fire:` | Remove code or files |
-| ♻️ | `:recycle:` | Refactor |
-| 📝 | `:memo:` | Documentation |
-| 🎨 | `:art:` | Improve structure or format |
-| ✅ | `:white_check_mark:` | Add or update tests |
-| 🚀 | `:rocket:` | Performance improvement |
-| 🔧 | `:wrench:` | Configuration or migration |
-| 📦 | `:package:` | Dependency change |
-| ⬆️ | `:arrow_up:` | Upgrade dependency |
-| ⬇️ | `:arrow_down:` | Downgrade dependency |
-| 🔒 | `:lock:` | Security fix |
-| 🚑 | `:ambulance:` | Critical hotfix |
-| 💄 | `:lipstick:` | UI or style change |
-| 🏗️ | `:building_construction:` | Architectural change |
-| 🚧 | `:construction:` | Work in progress |
-| 🩹 | `:adhesive_bandage:` | Simple or trivial fix |
-| 💡 | `:bulb:` | Add or update comments |
-| 🌐 | `:globe_with_meridians:` | Internationalization |
-| 🔀 | `:twisted_rightwards_arrows:` | Merge branches |
-| 🏷️ | `:label:` | Add or update types |
+| Emoji | Use when |
+|-------|----------|
+| ✨ | New feature |
+| 🐛 | Bug fix |
+| 🔥 | Remove code or files |
+| ♻️ | Refactor |
+| 📝 | Documentation |
+| 🎨 | Improve structure or format |
+| ✅ | Add or update tests |
+| 🚀 | Performance improvement |
+| 🔧 | Configuration or migration |
+| 📦 | Dependency change |
+| ⬆️ | Upgrade dependency |
+| ⬇️ | Downgrade dependency |
+| 🔒 | Security fix |
+| 🚑 | Critical hotfix |
+| 💄 | UI or style change |
+| 🏗️ | Architectural change |
+| 🚧 | Work in progress |
+| 🩹 | Simple or trivial fix |
+| 💡 | Add or update comments |
+| 🌐 | Internationalization |
+| 🔀 | Merge branches |
+| 🏷️ | Add or update types |
 
 ## Rules
 
