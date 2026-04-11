@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "git-helper",
-      "source": "git-helper",
+      "source": "./git-helper",
       "description": "Git workflow skills for commits, branches, and PR reviews",
       "version": "1.0.0",
       "author": { "name": "ToasT1ng" },
@@ -20,7 +20,7 @@
     },
     {
       "name": "spring-kotlin-clean-code-helper",
-      "source": "spring-kotlin-clean-code-helper",
+      "source": "./spring-kotlin-clean-code-helper",
       "description": "Clean code and architecture convention skills for Spring Kotlin",
       "version": "1.0.0",
       "author": { "name": "ToasT1ng" },
