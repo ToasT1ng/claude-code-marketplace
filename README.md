@@ -11,8 +11,8 @@ A community plugin marketplace for [Claude Code](https://claude.ai/code).
 ## Install plugins
 
 ```
-/plugin install git-helper@community-plugins
-/plugin install spring-kotlin-clean-code-helper@community-plugins
+/plugin install git-helper@toasting-hub
+/plugin install spring-kotlin-clean-code-helper@toasting-hub
 ```
 
 ## Available plugins
