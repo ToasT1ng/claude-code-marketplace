@@ -1,0 +1,9 @@
+{
+  "name": "spring-kotlin-clean-code-helper",
+  "description": "Clean code and architecture convention skills for Spring Kotlin",
+  "version": "1.0.0",
+  "author": {
+    "name": "ToasT1ng"
+  },
+  "license": "MIT"
+}

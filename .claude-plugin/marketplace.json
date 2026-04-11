@@ -1,0 +1,32 @@
+{
+  "name": "community-plugins",
+  "owner": {
+    "name": "ToasT1ng"
+  },
+  "metadata": {
+    "description": "Community-built plugins for Claude Code",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "git-helper",
+      "source": "git-helper",
+      "description": "Git workflow skills for commits, branches, and PR reviews",
+      "version": "1.0.0",
+      "author": { "name": "ToasT1ng" },
+      "license": "MIT",
+      "category": "skill",
+      "tags": ["git", "commit", "branch", "pr", "review"]
+    },
+    {
+      "name": "spring-kotlin-clean-code-helper",
+      "source": "spring-kotlin-clean-code-helper",
+      "description": "Clean code and architecture convention skills for Spring Kotlin",
+      "version": "1.0.0",
+      "author": { "name": "ToasT1ng" },
+      "license": "MIT",
+      "category": "skill",
+      "tags": ["spring", "kotlin", "clean-code", "architecture", "convention"]
+    }
+  ]
+}
