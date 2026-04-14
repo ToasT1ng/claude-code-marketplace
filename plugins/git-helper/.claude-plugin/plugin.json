@@ -1,7 +1,7 @@
 {
   "name": "git-helper",
   "description": "Git workflow skills for commits, branches, and PR reviews",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "ToasT1ng"
   },
