@@ -8,9 +8,9 @@ Write a gitmoji commit message for the staged changes. Commit messages are alway
 ## Steps
 
 1. Run `git diff --staged` to see what is staged.
-   - If nothing is staged, run `git diff --name-only` to check for unstaged changes.
-     - If unstaged files exist, run `git add -A` to stage everything, then proceed.
-     - If nothing is staged or unstaged, tell the user there is nothing to commit and stop.
+   - If nothing is staged, run `git status --porcelain` to check for any unstaged or untracked changes.
+     - If any changes exist, run `git add -A` to stage everything, then re-run `git diff --staged` to confirm.
+     - If nothing at all, tell the user there is nothing to commit and stop.
 2. Check whether the staged changes are semantically cohesive — do they belong in one commit?
    - If the changes span **unrelated concerns**, split them. See the splitting guide below.
    - If the changes are cohesive (e.g. a feature and its direct test consequences), write one message.
