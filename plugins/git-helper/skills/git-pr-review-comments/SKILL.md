@@ -28,9 +28,9 @@ Review the current PR and post the full analysis as a GitHub PR comment.
 
 5. **Show the review in the conversation** and ask: "이 내용을 PR에 코멘트로 남길까요? (Post this as a PR comment?)"
 
-6. **If the user confirms**, post the comment:
+6. **If the user confirms**, post the comment using the PR number from step 1 (replace `<PR_NUMBER>` with the actual number, e.g. `3`):
    ```bash
-   gh pr comment --body-file /tmp/pr_review_claude.md
+   gh pr comment <PR_NUMBER> --body-file /tmp/pr_review_claude.md
    ```
 
 7. **Clean up:**
