@@ -1,6 +1,89 @@
 ---
 name: git-pr-review-local
-description: Review local changes as if they were a pull request
+description: Review local changes as if they were a pull request — shows the full review in the conversation without posting to GitHub. Use this skill whenever the user wants a PR review shown locally. Trigger on phrases like "pr 리뷰해줘", "리뷰해줘", "pr review", "review this", "리뷰해", "내 코드 리뷰해줘", "변경사항 리뷰", "코드 리뷰", "review my changes", "review the diff", "check my pr", "look at my pr", "pr 확인해줘", "pr 봐줘", "pr 점검해줘". Use this skill (not git-pr-review-comments) when the user does NOT mention posting or leaving comments on GitHub.
 ---
 
-Review the current local diff as if it were a pull request, covering logic, security, and style.
+Review the current PR (or local diff) and present the full analysis in the conversation.
+
+## Steps
+
+1. **Get the diff** — run exactly this, in order, stopping at the first that returns output:
+   ```bash
+   gh pr diff --color=never 2>/dev/null
+   ```
+   If that fails (no associated PR), fall back to:
+   ```bash
+   git diff $(git merge-base HEAD origin/main 2>/dev/null || git merge-base HEAD origin/master 2>/dev/null || echo "HEAD~1")...HEAD
+   ```
+
+2. **Get PR context** (if a PR exists):
+   ```bash
+   gh pr view --json title,body,baseRefName,headRefName 2>/dev/null
+   ```
+
+3. **Analyze** the diff against the review criteria below.
+
+4. **Output** the full review using the markdown template below — nothing else before or after.
+
+## Review criteria
+
+Evaluate each changed file for:
+- **Correctness** — logic errors, off-by-ones, wrong conditions, missing null checks
+- **Security** — injection risks, exposed secrets, insecure defaults, OWASP top 10
+- **Performance** — unnecessary loops, N+1 queries, blocking calls, large allocations
+- **Maintainability** — naming clarity, code duplication, overly complex logic
+- **Test coverage** — missing tests for new logic, untested edge cases
+- **Style** — consistency with the surrounding codebase, dead code
+
+Severity definitions:
+- **Critical** — must fix before merge; correctness, security, or data-loss risk
+- **Major** — should fix before merge; significant impact on quality or behavior
+- **Minor** — nice to fix; style, naming, small improvements
+
+## Output template
+
+Use this exact structure every time. Keep section headers identical — they're used for parsing.
+
+```markdown
+## PR Review
+
+**Branch:** `<head>` → `<base>`  
+**Files changed:** <N>  
+
+---
+
+### ✅ Well done
+<!-- At least one genuine positive. Never skip this section. -->
+- <specific thing done well>
+
+---
+
+### 🔴 Critical
+<!-- Issues that must be fixed before merge. Omit section if none. -->
+- **`<file>:<line>`** — <concise description of the problem and why it matters>
+
+---
+
+### 🟠 Major
+<!-- Significant issues that should be fixed. Omit section if none. -->
+- **`<file>:<line>`** — <description>
+
+---
+
+### 🟡 Minor
+<!-- Small improvements. Omit section if none. -->
+- **`<file>:<line>`** — <description>
+
+---
+
+### 📋 Summary
+<2–3 sentence overall assessment. State the risk level to merge as-is.>
+```
+
+## Rules
+
+- Always include at least one "Well done" item — find something real, not generic praise.
+- Cite exact file and line numbers. Never say "somewhere in the code".
+- Do not repeat the diff back. Just the findings.
+- If the diff is empty, say so and stop.
+- Write in the same language the user used to invoke the skill (Korean → Korean review, English → English review).
