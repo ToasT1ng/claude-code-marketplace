@@ -9,7 +9,8 @@ Write a gitmoji commit message for the staged changes. Commit messages are alway
 
 1. Run `git diff --staged` to see what is staged.
    - If nothing is staged, run `git status --porcelain` to check for any unstaged or untracked changes.
-     - If any changes exist, run `git add -A` to stage everything, then re-run `git diff --staged` to confirm.
+     - If changes exist, list them and stage only non-sensitive tracked files: `git add $(git status --porcelain | grep -v '^??' | awk '{print $2}')`. Do NOT auto-stage untracked files unless the user explicitly asks.
+     - Then re-run `git diff --staged` to confirm what is staged.
      - If nothing at all, tell the user there is nothing to commit and stop.
 2. Check whether the staged changes are semantically cohesive — do they belong in one commit?
    - If the changes span **unrelated concerns**, split them. See the splitting guide below.
@@ -18,7 +19,10 @@ Write a gitmoji commit message for the staged changes. Commit messages are alway
 4. Write a concise one-line description in English.
 5. Decide what to do based on the user's intent:
    - **Message only** (e.g., "커밋 메시지 써줘", "what commit message should I use") → output the message(s) and stop.
-   - **Actually commit** (e.g., "커밋해줘", "commit this", "commit and push", "커밋하고 푸시해줘") → run `git commit -m "<message>"`, then if the user said "push", run `git push`.
+   - **Actually commit** (e.g., "커밋해줘", "commit this", "commit and push", "커밋하고 푸시해줘"):
+     1. Check the current branch: `git rev-parse --abbrev-ref HEAD`
+     2. If on `main` or `master`: do NOT commit directly. Instead, suggest creating a feature branch first (use the `git-branch-convention` skill to propose a name) and ask the user to confirm before proceeding.
+     3. If on a feature branch: run `git commit -m "<message>"`, then if the user said "push", run `git push`.
    - When in doubt, output the message and ask whether to run the commit.
 
 ## Format

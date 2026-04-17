@@ -10,10 +10,11 @@ Create a GitHub pull request for the current branch using `gh pr create`.
 1. **Gather context** — run these commands to understand what's changing:
    ```bash
    git rev-parse --abbrev-ref HEAD          # current branch name
-   git log main..HEAD --oneline             # commits on this branch
-   git diff main..HEAD --stat               # files changed
+   BASE=$(gh repo view --json defaultBranchRef -q '.defaultBranchRef.name' 2>/dev/null || echo "main")
+   git log origin/$BASE..HEAD --oneline     # commits on this branch
+   git diff origin/$BASE..HEAD --stat       # files changed
    ```
-   If the branch has no commits ahead of main, tell the user and stop.
+   If the branch has no commits ahead of the base, tell the user and stop.
 
 2. **Determine the base branch** — default to `main`. If the repo uses `master` or another base, detect it:
    ```bash
@@ -53,11 +54,9 @@ Always use this exact structure. Fill in each section from the diff and commit l
 
 ## Test Plan
 - [ ] 
-
-
-## Notes
-
 ```
+
+If there is something meaningful to note (breaking changes, follow-ups, known limitations), append a `## Notes` section after `## Test Plan`. Otherwise omit it entirely — do not include an empty `## Notes` heading.
 
 **Language rule:**
 - Default to English for all content.
@@ -67,7 +66,7 @@ Always use this exact structure. Fill in each section from the diff and commit l
 - **Summary**: 2-3 sentences — what changed and why.
 - **Changes**: One bullet per logical change. Reference file names where helpful. Keep each bullet under one line.
 - **Test Plan**: At least one checkbox. Derive from the type of change — a bug fix gets "Reproduce the bug, verify it's gone"; a new feature gets a smoke-test step.
-- **Notes**: Skip this section entirely (don't include the heading) if there's nothing meaningful to say.
+- **Notes**: Only include when there's something genuinely worth calling out (breaking change, known issue, follow-up ticket, deploy steps).
 
 ---
 
