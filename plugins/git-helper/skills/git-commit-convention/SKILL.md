@@ -1,15 +1,17 @@
 ---
 name: git-commit-convention
-description: Write a one-line gitmoji commit message for staged changes. Use this skill whenever the user wants to commit or needs a commit message — in English or Korean. Trigger on English phrases like "commit this", "write a commit", "make a commit", "commit my changes", "commit these changes", "what should I commit", "suggest a commit message", "generate a commit message", "help me commit", "what's a good commit message", "git commit message", "commit convention", "how should I commit", "stage and commit", "write me a commit", "commit message for this", "what commit message should I use", "draft a commit", "create a commit message", "give me a commit message", "commit format", "git commit format", "I want to commit", "ready to commit", "committing this", "commit these files", "commit message please", "what do I write for my commit", "message for commit", "write commit for me". Also trigger on Korean phrases like "커밋 메시지 써줘", "커밋 메시지 만들어줘", "커밋 메시지 추천해줘", "커밋 메시지 생성해줘", "커밋 해줘", "커밋 좀 해줘", "이거 커밋해줘", "커밋 작성", "커밋 뭐라고 써", "커밋 뭐로 할까", "어떻게 커밋할까", "변경사항 커밋", "깃 커밋", "깃 커밋 메시지", "커밋 남겨줘", "커밋 컨벤션", "커밋 규칙", "커밋 형식", "커밋 도와줘", "커밋 메시지 뭐가 좋아", "커밋 메시지 어떻게 써", "커밋 메시지 추천", "커밋 뭐로 남겨", "커밋 메시지 좀", "커밋 어떻게 해", "좋은 커밋 메시지", "커밋 메시지 알려줘", "커밋 할게", "커밋하려고", "커밋 내용 써줘", "이 변경사항 커밋", "커밋 메시지 뭘로 해", "깃 커밋 메시지 써줘", "커밋 예시", "커밋 스타일", "커밋 포맷".
+description: Write a one-line gitmoji commit message for staged changes, and execute the commit if requested. Use this skill whenever the user wants a commit message or asks to commit — in English or Korean. Trigger on phrases like "commit this", "write a commit", "suggest a commit message", "커밋 메시지 써줘", "커밋 해줘", "이거 커밋해줘", "커밋 메시지 만들어줘", "변경사항 커밋".
 ---
 
 Write a gitmoji commit message for the staged changes. Commit messages are always in English.
 
 ## Steps
 
+0. **Check prerequisites:** run `git rev-parse --git-dir 2>/dev/null` — if this fails (no output), tell the user this skill must be run inside a git repository and stop.
+
 1. Run `git diff --staged` to see what is staged.
    - If nothing is staged, run `git status --porcelain` to check for any unstaged or untracked changes.
-     - If changes exist, stage only tracked modified files (no untracked): `git add -u`. Do NOT auto-stage untracked files unless the user explicitly asks.
+     - If changes exist, stage only tracked changes (modifications and deletions, no untracked): `git add -u`. Do NOT auto-stage untracked files unless the user explicitly asks.
      - Then re-run `git diff --staged` to confirm what is staged.
      - If nothing at all, tell the user there is nothing to commit and stop.
 2. Check whether the staged changes are semantically cohesive — do they belong in one commit?

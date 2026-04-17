@@ -1,11 +1,18 @@
 ---
 name: git-pr-review-local
-description: Review local changes as if they were a pull request — shows the full review in the conversation without posting to GitHub. Use this skill whenever the user wants a PR review shown locally. Trigger on phrases like "pr 리뷰해줘", "리뷰해줘", "pr review", "review this", "리뷰해", "내 코드 리뷰해줘", "변경사항 리뷰", "코드 리뷰", "review my changes", "review the diff", "check my pr", "look at my pr", "pr 확인해줘", "pr 봐줘", "pr 점검해줘". Use this skill (not git-pr-review-comments) when the user does NOT mention posting or leaving comments on GitHub.
+description: Review local changes as if they were a pull request — shows the full review in the conversation without posting to GitHub. Use this skill whenever the user wants a PR review shown locally. Trigger on phrases like "pr review", "review this", "review my changes", "코드 리뷰", "pr 리뷰해줘", "리뷰해줘", "변경사항 리뷰". Use this skill (not git-pr-review-comments) when the user does NOT mention posting or leaving comments on GitHub.
 ---
 
 Review the current PR (or local diff) and present the full analysis in the conversation.
 
 ## Steps
+
+0. **Check prerequisites** — run as a single Bash call:
+   ```bash
+   git rev-parse --git-dir 2>/dev/null && gh auth status 2>/dev/null
+   ```
+   If `git rev-parse` fails, tell the user this must be run inside a git repository and stop.
+   If `gh auth status` fails, tell the user to run `gh auth login` first and stop.
 
 1. **Get the diff** — try in order, use the first that succeeds:
 
@@ -14,18 +21,15 @@ Review the current PR (or local diff) and present the full analysis in the conve
    gh pr diff --color=never 2>/dev/null
    ```
 
-   b. If no PR exists, find the merge base and diff from there:
+   b. If no PR exists, find the merge base and diff from there — run as a single Bash call:
    ```bash
    BASE=$(git merge-base HEAD origin/main 2>/dev/null \
      || git merge-base HEAD origin/master 2>/dev/null \
-     || git rev-parse HEAD~1)
+     || git rev-parse --verify HEAD~1 2>/dev/null \
+     || git rev-list --max-parents=0 HEAD) && \
    git diff "$BASE"...HEAD
    ```
-
-   c. If `origin/main` and `origin/master` both don't exist, use the last commit:
-   ```bash
-   git diff HEAD~1 HEAD
-   ```
+   Note: the `git rev-list --max-parents=0 HEAD` fallback handles the initial commit case by diffing from the repo root.
 
 2. **Get PR context** (if a PR exists):
    ```bash

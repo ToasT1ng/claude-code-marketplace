@@ -1,11 +1,18 @@
 ---
 name: git-pr-review-comments
-description: Review the current PR and post the review as a GitHub comment. Use this skill whenever the user wants the review posted to GitHub as a PR comment. Trigger on phrases like "pr comments", "pr에 코멘트", "pr 리뷰하고 코멘트 남겨줘", "pr 리뷰하고 코멘트", "pr and comments", "post review", "pr at git", "github에 리뷰 남겨", "github 코멘트", "pr comment 남겨줘", "리뷰 코멘트 달아줘", "pr에 달아줘", "pr review comment", "leave a review on the pr", "post pr review". Use this skill (not git-pr-review-local) when the user explicitly wants the review posted to GitHub.
+description: Review the current PR and post the review as a GitHub comment. Use this skill whenever the user wants the review posted to GitHub as a PR comment. Trigger on phrases like "post review", "leave a review on the pr", "pr review comment", "pr에 코멘트", "pr 리뷰하고 코멘트 남겨줘", "리뷰 코멘트 달아줘", "github에 리뷰 남겨". Use this skill (not git-pr-review-local) when the user explicitly wants the review posted to GitHub.
 ---
 
 Review the current PR and post the full analysis as a GitHub PR comment.
 
 ## Steps
+
+0. **Check prerequisites** — run as a single Bash call:
+   ```bash
+   git rev-parse --git-dir 2>/dev/null && gh auth status 2>/dev/null
+   ```
+   If `git rev-parse` fails, tell the user this must be run inside a git repository and stop.
+   If `gh auth status` fails, tell the user to run `gh auth login` first and stop.
 
 1. **Verify a PR exists:**
    ```bash
@@ -28,9 +35,9 @@ Review the current PR and post the full analysis as a GitHub PR comment.
 
 5. **Show the review in the conversation** and ask: "이 내용을 PR에 코멘트로 남길까요? (Post this as a PR comment?)"
 
-6. **If the user confirms**, post the comment using the PR number from step 1 (replace `<PR_NUMBER>` with the actual number, e.g. `3`):
+6. **If the user confirms**, post the comment — use the PR number captured in step 1:
    ```bash
-   gh pr comment <PR_NUMBER> --body-file /tmp/pr_review_claude.md
+   gh pr comment $(gh pr view --json number -q .number) --body-file /tmp/pr_review_claude.md
    ```
 
 7. **Clean up:**
