@@ -1,6 +1,6 @@
 ---
 name: git-branch-convention
-description: Suggest a git branch name following team conventions. Use this skill whenever the user wants a branch name or asks what to name their branch — in English or Korean. Trigger on English phrases like "suggest a branch name", "what should I name my branch", "branch name for this", "create a branch", "new branch name", "branch convention", "branch naming", "what branch should I use", "name this branch", "branch for this feature", "branch for this fix", "branch name please", "give me a branch name", "what do I call this branch". Also trigger on Korean phrases like "브랜치 이름 추천해줘", "브랜치 이름 뭐로 해", "브랜치 이름 만들어줘", "브랜치 이름 알려줘", "브랜치 뭐로 할까", "브랜치 이름 써줘", "브랜치 뭐라고 해", "브랜치 컨벤션", "브랜치 규칙", "브랜치 이름 좀", "이 작업 브랜치 이름", "브랜치 어떻게 해", "브랜치 이름 추천", "어떤 브랜치 써야 해", "브랜치 이름 뭐가 좋아".
+description: Suggest a git branch name following team conventions. Use this skill whenever the user wants a branch name or asks what to name their branch — in English or Korean. Trigger on phrases like "suggest a branch name", "branch name for this", "branch convention", "what branch should I use", "브랜치 이름 추천해줘", "브랜치 이름 만들어줘", "브랜치 뭐로 할까", "브랜치 컨벤션", "이 작업 브랜치 이름".
 ---
 
 Suggest a branch name for the given task following the branch naming convention below.

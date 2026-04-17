@@ -1,31 +1,34 @@
 ---
 name: git-pr-generator
-description: Create a GitHub pull request using gh CLI with a structured PR template. Use this skill whenever the user wants to create or generate a PR — in English or Korean. Trigger on English phrases like "create pr", "make pr", "generate pr", "open pr", "submit pr", "make a pull request", "create a pull request", "open a pull request", "generate a pull request", "make pull request", "pr please", "pr 만들어줘", "pr 생성해줘", "pr 생성", "pr 열어줘", "pr 올려줘", "pr 만들자", "pull request 만들어줘", "pull request 생성", "풀리퀘 만들어줘", "풀리퀘 올려줘", "풀리퀘 생성", "PR 생성해줘", "PR 만들어". Always use this skill when the user says anything about creating, making, or generating a PR or pull request.
+description: Create a GitHub pull request using gh CLI with a structured PR template. Use this skill whenever the user wants to create or generate a PR — in English or Korean. Trigger on phrases like "create pr", "make pr", "open pr", "make a pull request", "pr please", "pr 만들어줘", "pr 생성해줘", "풀리퀘 만들어줘", "PR 생성해줘". Always use this skill when the user says anything about creating, making, or generating a PR or pull request.
 ---
 
 Create a GitHub pull request for the current branch using `gh pr create`.
 
 ## Steps
 
-1. **Gather context** — run these commands to understand what's changing:
+0. **Check prerequisites** — run as a single Bash call:
    ```bash
-   git rev-parse --abbrev-ref HEAD          # current branch name
-   BASE=$(gh repo view --json defaultBranchRef -q '.defaultBranchRef.name' 2>/dev/null || echo "main")
-   git log origin/$BASE..HEAD --oneline     # commits on this branch
-   git diff origin/$BASE..HEAD --stat       # files changed
+   git rev-parse --git-dir 2>/dev/null && gh auth status 2>/dev/null
    ```
-   If the branch has no commits ahead of the base, tell the user and stop.
+   If `git rev-parse` fails, tell the user this must be run inside a git repository and stop.
+   If `gh auth status` fails, tell the user to run `gh auth login` first and stop.
 
-2. **Determine the base branch** — default to `main`. If the repo uses `master` or another base, detect it:
+1. **Gather context** — run as a single Bash call so `$BASE` persists across commands:
    ```bash
-   gh repo view --json defaultBranchRef -q '.defaultBranchRef.name'
+   BASE=$(gh repo view --json defaultBranchRef -q '.defaultBranchRef.name' 2>/dev/null || echo "main") && \
+   BRANCH=$(git rev-parse --abbrev-ref HEAD) && \
+   echo "branch=$BRANCH base=$BASE" && \
+   git log "origin/$BASE..HEAD" --oneline && \
+   git diff "origin/$BASE..HEAD" --stat
    ```
+   If the branch has no commits ahead of `origin/$BASE`, tell the user and stop.
 
-3. **Craft the PR title** — derive a concise title (under 70 characters) from the branch name and commit messages. Strip the branch type prefix (e.g., `feature/`, `fix/`) to get a human-readable phrase.
+2. **Craft the PR title** — derive a concise title (under 70 characters) from the branch name and commit messages. Strip the branch type prefix (e.g., `feature/`, `fix/`) to get a human-readable phrase.
 
-4. **Fill in the PR template** — use the template below, replacing the placeholders based on the actual diff and commits.
+3. **Fill in the PR template** — use the template below, replacing the placeholders based on the actual diff and commits.
 
-5. **Create the PR** using exactly this command shape:
+4. **Create the PR** using exactly this command shape:
    ```bash
    gh pr create \
      --title "<title>" \
@@ -36,7 +39,7 @@ Create a GitHub pull request for the current branch using `gh pr create`.
    ```
    Do not add `--draft`, `--assignee`, `--label`, or other flags unless the user explicitly asks.
 
-6. **Report the result** — output the PR URL returned by `gh pr create`.
+5. **Report the result** — output the PR URL returned by `gh pr create`.
 
 ---
 
