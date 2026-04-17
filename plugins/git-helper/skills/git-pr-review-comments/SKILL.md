@@ -19,6 +19,8 @@ Review the current PR and post the full analysis as a GitHub PR comment.
    ```
 
 3. **Analyze** the diff using the review criteria below.
+   - If the diff is empty, tell the user and stop — do not post.
+   - If the diff is very large (>500 lines), focus on the highest-risk areas: new files, deleted validations, changed auth/security logic, and altered interfaces.
 
 4. **Compose the full review** using the template below, then **write it to a temp file** using the Write tool (not a bash heredoc — shell escaping will corrupt multi-line markdown):
    - Write the complete review markdown to: `/tmp/pr_review_claude.md`
@@ -97,6 +99,7 @@ Use this exact structure every time. The headers must stay identical.
 - Always write the review using the Write tool to `/tmp/pr_review_claude.md`, then post with `--body-file`. Never pass the body directly as a shell argument — special characters will break.
 - Always show the review to the user before posting and ask for confirmation.
 - Always include at least one "Well done" item — find something real, not generic praise.
-- Cite exact file and line numbers. Never say "somewhere in the code".
+- Omit Critical/Major/Minor sections entirely if there are no findings in that category — don't include empty sections.
+- Cite exact file and line numbers whenever possible. Never say "somewhere in the code".
 - Do not post if the diff is empty. Tell the user instead.
 - Write review content in the same language the user used to invoke the skill (Korean → Korean review, English → English review).

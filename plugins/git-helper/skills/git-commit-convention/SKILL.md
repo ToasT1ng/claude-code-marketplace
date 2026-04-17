@@ -16,7 +16,10 @@ Write a gitmoji commit message for the staged changes. Commit messages are alway
    - If the changes are cohesive (e.g. a feature and its direct test consequences), write one message.
 3. Pick one gitmoji that best represents the primary intent.
 4. Write a concise one-line description in English.
-5. Output only the commit message(s), nothing else.
+5. Decide what to do based on the user's intent:
+   - **Message only** (e.g., "커밋 메시지 써줘", "what commit message should I use") → output the message(s) and stop.
+   - **Actually commit** (e.g., "커밋해줘", "commit this", "commit and push", "커밋하고 푸시해줘") → run `git commit -m "<message>"`, then if the user said "push", run `git push`.
+   - When in doubt, output the message and ask whether to run the commit.
 
 ## Format
 

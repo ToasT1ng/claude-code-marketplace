@@ -33,6 +33,7 @@ When in conflict, prioritize the character limit. These are hard limits, not gui
 | `chore/` | Maintenance, configuration, dependency updates |
 | `refactor/` | Code restructuring with no behavior change |
 | `docs/` | Documentation only |
+| `test/` | Adding or fixing tests without changing production code |
 
 ## Steps
 

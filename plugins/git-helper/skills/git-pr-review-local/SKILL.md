@@ -33,6 +33,7 @@ Review the current PR (or local diff) and present the full analysis in the conve
    ```
 
 3. **Analyze** the diff against the review criteria below.
+   - If the diff is very large (>500 lines), focus on the highest-risk areas: new files, deleted validations, changed auth/security logic, and altered interfaces. Don't attempt to exhaustively review every line — prioritize signal over coverage.
 
 4. **Output** the full review using the markdown template below — nothing else before or after.
 
@@ -90,7 +91,8 @@ Use this exact structure every time. Keep section headers identical — they're 
 ## Rules
 
 - Always include at least one "Well done" item — find something real, not generic praise.
-- Cite exact file and line numbers. Never say "somewhere in the code".
+- Omit Critical/Major/Minor sections entirely if there are no findings in that category — don't include empty sections.
+- Cite exact file and line numbers whenever possible. Never say "somewhere in the code".
 - Do not repeat the diff back. Just the findings.
 - If the diff is empty, say so and stop.
 - Write in the same language the user used to invoke the skill (Korean → Korean review, English → English review).
