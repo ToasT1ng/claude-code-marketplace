@@ -7,13 +7,24 @@ Review the current PR (or local diff) and present the full analysis in the conve
 
 ## Steps
 
-1. **Get the diff** — run exactly this, in order, stopping at the first that returns output:
+1. **Get the diff** — try in order, use the first that succeeds:
+
+   a. If a PR is associated with the current branch:
    ```bash
    gh pr diff --color=never 2>/dev/null
    ```
-   If that fails (no associated PR), fall back to:
+
+   b. If no PR exists, find the merge base and diff from there:
    ```bash
-   git diff $(git merge-base HEAD origin/main 2>/dev/null || git merge-base HEAD origin/master 2>/dev/null || echo "HEAD~1")...HEAD
+   BASE=$(git merge-base HEAD origin/main 2>/dev/null \
+     || git merge-base HEAD origin/master 2>/dev/null \
+     || git rev-parse HEAD~1)
+   git diff "$BASE"...HEAD
+   ```
+
+   c. If `origin/main` and `origin/master` both don't exist, use the last commit:
+   ```bash
+   git diff HEAD~1 HEAD
    ```
 
 2. **Get PR context** (if a PR exists):
@@ -53,25 +64,21 @@ Use this exact structure every time. Keep section headers identical — they're 
 ---
 
 ### ✅ Well done
-<!-- At least one genuine positive. Never skip this section. -->
 - <specific thing done well>
 
 ---
 
 ### 🔴 Critical
-<!-- Issues that must be fixed before merge. Omit section if none. -->
 - **`<file>:<line>`** — <concise description of the problem and why it matters>
 
 ---
 
 ### 🟠 Major
-<!-- Significant issues that should be fixed. Omit section if none. -->
 - **`<file>:<line>`** — <description>
 
 ---
 
 ### 🟡 Minor
-<!-- Small improvements. Omit section if none. -->
 - **`<file>:<line>`** — <description>
 
 ---

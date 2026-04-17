@@ -20,24 +20,23 @@ Review the current PR and post the full analysis as a GitHub PR comment.
 
 3. **Analyze** the diff using the review criteria below.
 
-4. **Write the review to a temp file** (avoids shell encoding issues):
+4. **Compose the full review** using the template below, then **write it to a temp file** using the Write tool (not a bash heredoc — shell escaping will corrupt multi-line markdown):
+   - Write the complete review markdown to: `/tmp/pr_review_claude.md`
+   - Encoding must be UTF-8.
+
+5. **Show the review in the conversation** and ask: "이 내용을 PR에 코멘트로 남길까요? (Post this as a PR comment?)"
+
+6. **If the user confirms**, post the comment:
    ```bash
-   cat > /tmp/pr_review_$$.md << 'REVIEW_EOF'
-   <review content here>
-   REVIEW_EOF
+   gh pr comment --body-file /tmp/pr_review_claude.md
    ```
 
-5. **Post as a PR comment:**
+7. **Clean up:**
    ```bash
-   gh pr comment --body-file /tmp/pr_review_$$.md
+   rm -f /tmp/pr_review_claude.md
    ```
 
-6. **Clean up:**
-   ```bash
-   rm -f /tmp/pr_review_$$.md
-   ```
-
-7. Output the PR URL and confirm the comment was posted.
+8. Output the PR URL and confirm the comment was posted.
 
 ## Review criteria
 
@@ -67,25 +66,21 @@ Use this exact structure every time. The headers must stay identical.
 ---
 
 ### ✅ Well done
-<!-- At least one genuine positive. Never skip this section. -->
 - <specific thing done well>
 
 ---
 
 ### 🔴 Critical
-<!-- Issues that must be fixed before merge. Omit section if none. -->
 - **`<file>:<line>`** — <concise description of the problem and why it matters>
 
 ---
 
 ### 🟠 Major
-<!-- Significant issues that should be fixed. Omit section if none. -->
 - **`<file>:<line>`** — <description>
 
 ---
 
 ### 🟡 Minor
-<!-- Small improvements. Omit section if none. -->
 - **`<file>:<line>`** — <description>
 
 ---
@@ -99,9 +94,9 @@ Use this exact structure every time. The headers must stay identical.
 
 ## Rules
 
-- Always write the review to a file first (`/tmp/pr_review_$$.md`) and use `--body-file`. Never pass the review body directly as a shell argument — multi-line markdown with special characters will break.
+- Always write the review using the Write tool to `/tmp/pr_review_claude.md`, then post with `--body-file`. Never pass the body directly as a shell argument — special characters will break.
+- Always show the review to the user before posting and ask for confirmation.
 - Always include at least one "Well done" item — find something real, not generic praise.
 - Cite exact file and line numbers. Never say "somewhere in the code".
 - Do not post if the diff is empty. Tell the user instead.
 - Write review content in the same language the user used to invoke the skill (Korean → Korean review, English → English review).
-- Use `$$` in the temp filename to avoid collisions with parallel runs.
