@@ -105,10 +105,14 @@ fun Order.toJpaEntity() = OrderJpaEntity(
 fun OrderJpaEntity.toDomain() = Order(
     id = OrderId(id!!),
     userId = UserId(userId),
-    items = emptyList(), // load separately if needed
+    items = emptyList(), // items stored in a separate table — load via OrderItemJpaRepository when needed
     status = OrderStatus.valueOf(status),
     totalPrice = Money(totalAmount, Currency.getInstance(currency))
 )
+
+// When items are needed, load them explicitly in the adapter before calling toDomain():
+// val items = orderItemJpaRepository.findByOrderId(entity.id!!).map { it.toDomain() }
+// entity.toDomain().copy(items = items)
 ```
 
 ### External API Client (`adapter/out/api/`)

@@ -12,7 +12,7 @@ com.example.{domain-context}/
 │       └── api/                  ← External API clients
 ├── application/
 │   ├── service/                  ← Use case implementations
-│   └── util/                     ← Application-level utilities
+│   └── util/                     ← Cross-cutting application utilities (e.g., date/time helpers, pagination wrappers)
 └── domain/
     ├── model/                    ← Entities, Value Objects, Domain Services
     └── port/

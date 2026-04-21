@@ -21,7 +21,9 @@ data class Order(
     }
 
     fun cancel(): Order {
-        check(status.isCancellable()) { "Order in $status cannot be cancelled" }
+        check(status in setOf(OrderStatus.PENDING, OrderStatus.CONFIRMED)) {
+            "Order in $status cannot be cancelled"
+        }
         return copy(status = OrderStatus.CANCELLED)
     }
 }

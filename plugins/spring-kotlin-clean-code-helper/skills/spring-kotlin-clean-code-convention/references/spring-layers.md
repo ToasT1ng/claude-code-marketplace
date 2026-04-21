@@ -57,8 +57,9 @@ data class FindOrderQuery(val userId: Long, val status: OrderStatus?, val fromDa
 ```kotlin
 @RestController
 @RequestMapping("/api/v1/orders")
-class CreateOrderController(private val createOrderService: CreateOrderService) {
-
+class CreateOrderController(
+    private val createOrderService: CreateOrderService  // inject concrete service in layered arch
+) {
     @PostMapping
     fun createOrder(
         @RequestBody @Valid request: CreateOrderRequest,
@@ -70,6 +71,8 @@ class CreateOrderController(private val createOrderService: CreateOrderService) 
     }
 }
 ```
+
+> **Hexagonal Architecture**: If following hexagonal architecture, inject the use case interface instead of the concrete service — `private val createOrderUseCase: CreateOrderUseCase`. See `spring-kotlin-clean-architecture-convention` skill for details.
 
 **Service** — business logic and transaction boundary
 ```kotlin

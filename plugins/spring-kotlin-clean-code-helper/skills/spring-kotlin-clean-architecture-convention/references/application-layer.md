@@ -4,7 +4,9 @@ The application layer orchestrates domain logic. It defines what the system *can
 
 ## Input Ports (Use Case Interfaces)
 
-Input ports live in `domain/port/in/`. They define the contract that driving adapters (controllers) call.
+Input ports live in `domain/port/in/` — they are part of the domain boundary, not the application layer.
+The application layer *implements* them; the domain layer *owns* them.
+This way the domain defines what operations are possible, and adapters depend on the domain — not on application internals.
 
 Naming: `{Verb}{Domain}UseCase`
 
